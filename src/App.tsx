@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { Outlet } from 'react-router-dom';
+import "./App.css";
+import useInfiniteScroll from "./utils/hooks/infiniteScroll";
 
 function App() {
+  const { products, setProducts } = useInfiniteScroll();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <div><Outlet/></div>
-      </header>
+      <div className="grid gap-4 p-5 ">
+        {products.length > 0 &&
+          products.map((product: any) => {
+            const image = product.images[0];
+            return (
+              <div className="border shadow rounded">
+                <p className=" p-3">{product.title}</p>
+                <div className="w-44 mx-auto">
+                  <img src={image} alt="" />
+                </div>
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
 }
