@@ -36,5 +36,5 @@ export default function useInfiniteScroll() {
     getPageData();
   }, [pageIndex]);
 
-  return { products, setProducts, setPageIndex, isLoadMore, isLoading };
+  return { products, setProducts, setPageIndex, isLoadMore, isLoading , setIsLoading};
 }

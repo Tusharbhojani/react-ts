@@ -1,35 +1,20 @@
 import { useEffect, useRef } from "react";
 import "./App.css";
 import useInfiniteScroll from "./utils/hooks/infiniteScroll";
+import useOnScreen from "./utils/hooks/useOnScreen";
 
 function App() {
-  const ref = useRef(null);
+  const { ref, isVisible } = useOnScreen({ threshold: 0.5 });
 
-  const { products, setProducts, setPageIndex, isLoadMore, isLoading } =
+  const { products, setProducts, setPageIndex, isLoadMore, isLoading, setIsLoading } =
     useInfiniteScroll();
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          if (isLoadMore && !isLoading) {
-            setPageIndex((prev) => prev + 1);
-          }
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
+    if (isVisible && isLoadMore && !isLoading) {
+      setIsLoading(true);
+      setPageIndex((prev) => prev + 1);
     }
-
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
-    };
-  }, [ref, isLoading, isLoadMore]);
+  }, [isVisible]);
 
   return (
     <div className="App">
